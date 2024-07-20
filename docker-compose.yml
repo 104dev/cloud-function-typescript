@@ -1,0 +1,27 @@
+version: '3.0'
+services:
+  gcloud:
+    container_name: gcloud
+    image: google/cloud-sdk:alpine
+    platform: linux/x86_64
+    volumes:
+      - ./src:/src
+      - gcloud_data:/root/.config/gcloud
+    working_dir: /src
+    entrypoint: bash
+    tty: true
+
+  node:
+    container_name: node
+    image: node:20-alpine
+    platform: linux/x86_64
+    volumes:
+      - ./src:/src
+    working_dir: /src
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    tty: true
+
+volumes:
+  gcloud_data:
